@@ -1,5 +1,5 @@
 {
-  "name": "react-native-pixel-color",
+  "name": "@snowmap.fr/react-native-pixel-color",
   "version": "0.1.0",
   "description": "Get the color of a pixel from a base64 PNG image",
   "main": "./lib/module/index.js",
