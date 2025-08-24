@@ -14,11 +14,14 @@ npm install react-native-pixel-color
 
 
 ```js
-import { multiply } from 'react-native-pixel-color';
 
-// ...
+const base64 = 'iVBORw0KGgoAAAANSUhEUg...MxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=';
+const x = 10
+const y = 10
 
-const result = multiply(3, 7);
+const color = await getPixelColor(base64, x, y)
+console.log(color)
+// { "alpha": 255, "blue": 77, "green": 204, "red": 255 }
 ```
 
 
