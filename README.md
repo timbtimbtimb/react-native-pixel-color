@@ -2,6 +2,10 @@
 
 Get the color of a pixel from a base64 PNG image
 
+## Compatibility
+
+Only works on Android at the moment, iOS version coming shortly.
+
 ## Installation
 
 
