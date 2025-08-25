@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
-import { getPixelColor } from 'react-native-pixel-color';
+import { getPixelColor } from '@snowmap.fr/react-native-pixel-color';
 
 export default function App() {
   const [color, setColor] = useState('');
