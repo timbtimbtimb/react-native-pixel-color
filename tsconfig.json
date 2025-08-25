@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-pixel-color": ["./src/index"]
+      "@snowmap.fr/react-native-pixel-color": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
