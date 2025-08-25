@@ -16,7 +16,8 @@ class PixelColorModule(reactContext: ReactApplicationContext) :
 
     override fun getPixelColor(base64Png: String, x: Double, y: Double, promise: Promise) {
         try {
-            val decodedBytes = Base64.decode(base64Png, Base64.DEFAULT)
+            val base64Data = base64Png.substringAfter(",")
+            val decodedBytes = Base64.decode(base64Data, Base64.DEFAULT)
             val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
                 ?: throw IllegalArgumentException("Failed to decode base64 image")
 
