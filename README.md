@@ -1,4 +1,4 @@
-# react-native-pixel-color
+# @snowmap.fr/react-native-pixel-color
 
 Get the color of a pixel from a base64 PNG image
 
@@ -18,7 +18,7 @@ Only works on Android at the moment, iOS version coming shortly.
 
 
 ```sh
-npm install react-native-pixel-color
+npm install @snowmap.fr/react-native-pixel-color
 ```
 
 
