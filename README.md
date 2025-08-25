@@ -2,6 +2,14 @@
 
 Get the color of a pixel from a base64 PNG image
 
+
+## npm
+
+[![npm version](https://img.shields.io/npm/v/@snowmap.fr/react-native-pixel-color.svg)](https://www.npmjs.com/package/@snowmap.fr/react-native-pixel-color)
+
+[`@snowmap.fr/react-native-pixel-color`](https://www.npmjs.com/package/@snowmap.fr/react-native-pixel-color)
+
+
 ## Compatibility
 
 Only works on Android at the moment, iOS version coming shortly.
