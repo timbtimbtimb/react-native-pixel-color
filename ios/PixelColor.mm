@@ -1,4 +1,5 @@
 #import "PixelColor.h"
+#import <UIKit/UIKit.h>
 
 @implementation PixelColor
 RCT_EXPORT_MODULE()
@@ -9,13 +10,56 @@ RCT_EXPORT_MODULE()
              resolve:(RCTPromiseResolveBlock)resolve
              reject:(RCTPromiseRejectBlock)reject
 {
-    NSDictionary *result = @{
-        @"red": @0,
-        @"green": @0,
-        @"blue": @0,
-        @"alpha": @0
-    };
-    resolve(result);
+    @try {
+        NSArray *parts = [base64Png componentsSeparatedByString:@","];
+        NSString *pureBase64 = (parts.count > 1) ? parts.lastObject : base64Png;
+
+        NSData *imageData = [[NSData alloc] initWithBase64EncodedString:pureBase64 options:NSDataBase64DecodingIgnoreUnknownCharacters];
+        if (!imageData) {
+            reject(@"decode_error", @"Failed to decode base64 image", nil);
+            return;
+        }
+
+        UIImage *image = [UIImage imageWithData:imageData];
+        if (!image) {
+            reject(@"image_error", @"Failed to create UIImage from data", nil);
+            return;
+        }
+
+        CGImageRef cgImage = [image CGImage];
+        NSUInteger width = CGImageGetWidth(cgImage);
+        NSUInteger height = CGImageGetHeight(cgImage);
+
+        if (x < 0 || y < 0 || x >= width || y >= height) {
+            reject(@"bounds_error", @"Coordinates out of image bounds", nil);
+            return;
+        }
+
+        unsigned char pixelData[4] = {0};
+        CGContextRef context = CGBitmapContextCreate(pixelData,
+                                                     1,
+                                                     1,
+                                                     8,
+                                                     4,
+                                                     CGImageGetColorSpace(cgImage),
+                                                     kCGImageAlphaPremultipliedLast);
+
+        CGContextSetBlendMode(context, kCGBlendModeCopy);
+        CGContextTranslateCTM(context, -x, y - height + 1);
+        CGContextDrawImage(context, CGRectMake(0, 0, width, height), cgImage);
+        CGContextRelease(context);
+
+        NSDictionary *result = @{
+            @"red": @(pixelData[0]),
+            @"green": @(pixelData[1]),
+            @"blue": @(pixelData[2]),
+            @"alpha": @(pixelData[3])
+        };
+        resolve(result);
+    }
+    @catch (NSException *exception) {
+        reject(@"exception", exception.reason, nil);
+    }
 }
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
