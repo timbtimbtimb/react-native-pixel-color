@@ -6,8 +6,8 @@ RCT_EXPORT_MODULE()
 - (void)getPixelColor:(NSString *)base64Png
                     x:(double)x
                     y:(double)y
-             resolver:(RCTPromiseResolveBlock)resolve
-             rejecter:(RCTPromiseRejectBlock)reject
+             resolve:(RCTPromiseResolveBlock)resolve
+             reject:(RCTPromiseRejectBlock)reject
 {
     NSDictionary *result = @{
         @"red": @0,
