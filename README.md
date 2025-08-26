@@ -10,10 +10,6 @@ Get the color of a pixel from a base64 PNG image
 [`@snowmap.fr/react-native-pixel-color`](https://www.npmjs.com/package/@snowmap.fr/react-native-pixel-color)
 
 
-## Compatibility
-
-Only works on Android at the moment, iOS version coming shortly.
-
 ## Installation
 
 
