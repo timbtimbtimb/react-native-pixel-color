@@ -6,9 +6,21 @@ We want this community to be friendly and respectful to each other. Please follo
 
 ## Quick start: running example app
 
+### Android
+
 ```sh
 yarn
 yarn example android
+```
+
+### iOS
+
+```sh
+yarn
+cd example/ios
+pod install
+cd ../..
+yarn example ios
 ```
 
 ## Development workflow
