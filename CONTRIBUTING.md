@@ -18,6 +18,7 @@ yarn example android
 ```sh
 yarn
 cd example/ios
+bundle install
 pod install
 cd ../..
 yarn example ios
