@@ -36,18 +36,25 @@ RCT_EXPORT_MODULE()
         }
 
         unsigned char pixelData[4] = {0};
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
         CGContextRef context = CGBitmapContextCreate(pixelData,
                                                      1,
                                                      1,
                                                      8,
                                                      4,
-                                                     CGImageGetColorSpace(cgImage),
-                                                     kCGImageAlphaPremultipliedLast);
+                                                     colorSpace,
+                                                     kCGBitmapByteOrder32Big | kCGImageAlphaPremultipliedLast);
 
-        CGContextSetBlendMode(context, kCGBlendModeCopy);
-        CGContextTranslateCTM(context, -x, y - height + 1);
-        CGContextDrawImage(context, CGRectMake(0, 0, width, height), cgImage);
+        if (!context) {
+            CGColorSpaceRelease(colorSpace);
+            reject(@"context_error", @"Failed to create bitmap context", nil);
+            return;
+        }
+
+        CGContextDrawImage(context, CGRectMake(-x, y - height + 1, width, height), cgImage);
+
         CGContextRelease(context);
+        CGColorSpaceRelease(colorSpace);
 
         NSDictionary *result = @{
             @"red": @(pixelData[0]),
