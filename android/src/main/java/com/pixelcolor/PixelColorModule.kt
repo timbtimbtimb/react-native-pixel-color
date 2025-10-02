@@ -3,10 +3,12 @@ package com.pixelcolor
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.annotations.ReactModule
 import android.graphics.BitmapFactory
+import android.graphics.Bitmap
 import android.util.Base64
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.WritableMap
+import kotlin.math.roundToInt
 
 @ReactModule(name = PixelColorModule.NAME)
 class PixelColorModule(reactContext: ReactApplicationContext) :
@@ -15,17 +17,18 @@ class PixelColorModule(reactContext: ReactApplicationContext) :
     override fun getName(): String = NAME
 
     override fun getPixelColor(base64Png: String, x: Double, y: Double, promise: Promise) {
+        var bitmap: Bitmap? = null
         try {
-            val base64Data = base64Png.substringAfter(",")
+            val base64Data = if (base64Png.contains(",")) base64Png.substringAfter(",") else base64Png
             val decodedBytes = Base64.decode(base64Data, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+            bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
                 ?: throw IllegalArgumentException("Failed to decode base64 image")
 
-            val ix = x.toInt()
-            val iy = y.toInt()
+            val ix = x.roundToInt()
+            val iy = y.roundToInt()
 
             if (ix < 0 || iy < 0 || ix >= bitmap.width || iy >= bitmap.height) {
-                throw IllegalArgumentException("Coordinates outside image bounds")
+                throw IllegalArgumentException("Coordinates ($ix, $iy) outside image bounds (${bitmap.width}, ${bitmap.height})")
             }
 
             val pixel = bitmap.getPixel(ix, iy)
@@ -43,7 +46,9 @@ class PixelColorModule(reactContext: ReactApplicationContext) :
 
             promise.resolve(map)
         } catch (e: Exception) {
-            promise.reject("PixelColorError", e)
+            promise.reject("PixelColorError", e.message, e)
+        } finally {
+            bitmap?.recycle()
         }
     }
 
